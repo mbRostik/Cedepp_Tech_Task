@@ -1,6 +1,8 @@
 using Cedepp.Application.UseCases.Commands;
 using Cedepp.Application.UseCases.Consumers;
+using Cedepp.Application.Validators;
 using Cedepp.Infrastructure.Data;
+using FluentValidation.AspNetCore;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +22,7 @@ builder.Services.AddDbContext<CedeppDbContext>(options =>
 {
     options.UseSqlServer(connectionString);
 });
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ChangeUserProfileDTOValidator>());
 
 builder.Host.UseSerilog((context, configuration) =>
 {

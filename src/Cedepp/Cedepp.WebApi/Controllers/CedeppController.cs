@@ -1,6 +1,7 @@
 ﻿using Cedepp.Application.Contracts.DTOs;
 using Cedepp.Application.UseCases.Commands;
 using Cedepp.Application.UseCases.Queries;
+using Cedepp.Application.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ namespace Cedepp.WebApi.Controllers
         }
 
         [HttpPost("UploadProfilePhoto")]
-        public async Task<ActionResult> UploadProfilePhoto([FromBody] ChangeProfilePhotoDTO data)
+        public async Task<ActionResult<GiveUserProfileFormDTO>> UploadProfilePhoto([FromBody] ChangeProfilePhotoDTO data)
         {
             var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
@@ -37,8 +38,9 @@ namespace Cedepp.WebApi.Controllers
                 await mediator.Send(new ChangeProfilePhotoCommand(data, userId));
 
                 Console.WriteLine("Profile photo updated successfully for user.");
+                var result = await mediator.Send(new GetUserProfileQuery(userId));
 
-                return Ok();
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -71,6 +73,7 @@ namespace Cedepp.WebApi.Controllers
         [HttpPost("FinishRegistration")]
         public async Task<ActionResult> FinishRegistration([FromBody] ChangeUserProfileDTO data)
         {
+
             var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
 
@@ -78,6 +81,15 @@ namespace Cedepp.WebApi.Controllers
             {
                 return NotFound("User ID not found.");
             }
+
+            var validator = new ChangeUserProfileDTOValidator();
+            var validationResult = validator.Validate(data);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors.Select(e => new { error = e.ErrorMessage }));
+            }
+
 
             var result = await mediator.Send(new FinishUserRegistrationCommand(data, userId));
 

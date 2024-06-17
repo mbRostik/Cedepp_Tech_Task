@@ -48,6 +48,8 @@ namespace Cedepp.Application.UseCases.Handlers.OperationHandlers
                 user.CodiceFiscale = request.model.CodiceFiscale;
                 user.DayOfBirth = request.model.DayOfBirth;
                 user.Workplace = request.model.Workplace;
+                user.Address = request.model.Address;
+                await dbContext.SaveChangesAsync();
                 _logger.Information("The info about user was changed and saved: {UserId}", request.Id);
 
                 return true;
