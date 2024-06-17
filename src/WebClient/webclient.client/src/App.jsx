@@ -35,7 +35,7 @@ function App() {
                 </div>
             ) : isAuthorized === false ? (
                     <div className="text-center mt-5">
-                        <h1 className="text-center">SMART business - Junior CRM Developer - Test task</h1>
+                        <h1 className="text-center">Cedepp - Test task</h1>
                         <br></br>
                     <div className="btn-group mb-4">
                         <button onClick={onLogin} className="btn btn-primary">Login</button>
@@ -51,7 +51,7 @@ function App() {
                     {userData && userData.isFinished ? (
                         <>
                             <div className="d-flex justify-content-center align-items-center mb-4">
-                                <h1 className="text-center">SMART business - Junior CRM Developer - Test task</h1>
+                                <h1 className="text-center">Cedepp - Test task</h1>
                             </div>
                             <Profile />
                         </>
