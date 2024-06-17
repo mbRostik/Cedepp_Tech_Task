@@ -16,11 +16,6 @@ namespace Cedepp.Infrastructure.Data.EntityTypeConfiguration
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(c => c.Id)
-                .IsRequired()
-                .ValueGeneratedOnAdd()
-                .HasAnnotation("DatabaseGenerated", DatabaseGeneratedOption.Identity);
-
             builder.Property(c => c.FirstName)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -49,12 +44,15 @@ namespace Cedepp.Infrastructure.Data.EntityTypeConfiguration
                 .IsRequired()
                 .HasMaxLength(5);
 
-            builder.Property(c => c.Age)
+            builder.Property(c => c.DayOfBirth)
                 .IsRequired();
 
             builder.Property(c => c.Workplace)
                 .IsRequired(false)
                 .HasMaxLength(100);
+
+            builder.Property(c => c.Photo)
+                .IsRequired(false);
         }
     }
 }
